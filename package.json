@@ -1,0 +1,26 @@
+{
+  "name": "cascadia-react-workshop-materials",
+  "version": "1.0.0",
+  "description": "Advanced React workshop for Cascadia",
+  "main": "index.js",
+  "dependencies": {
+    "concurrently": "^4.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "concurrently \"npm:start-*\"",
+    "start-client": "cd client && yarn start",
+    "start-server": "cd server && yarn start",
+    "reseed-db": "cd server && yarn drop-db && yarn create-db"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FormidableLabs/cascadia-react-workshop-materials.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FormidableLabs/cascadia-react-workshop-materials/issues"
+  },
+  "homepage": "https://github.com/FormidableLabs/cascadia-react-workshop-materials#readme"
+}

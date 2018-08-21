@@ -1,0 +1,15 @@
+{
+  "extends": ["prettier", "formidable/configurations/es6-node"],
+  "rules": {
+    "space-before-function-paren": "off",
+    "template-tag-spacing": "off",
+    "no-magic-numbers": "off",
+    "no-console": "off",
+    "strict": "off",
+    "comma-dangle": "off",
+    "object-shorthand": "off",
+    "object-property-newline": "off",
+    "camelcase": "off",
+    "arrow-parens": "off"
+  }
+}
