@@ -1,0 +1,21 @@
+.App-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 40px 100px 40px 100px;
+  border-bottom: 1px solid black;
+}
+
+.App-title {
+  font-size: 1.5em;
+  display: flex;
+  flex: 1;
+}
+
+.App-menu ul {
+  display: flex;
+}
+
+.App-menu li {
+  margin-left: 30px;
+}
