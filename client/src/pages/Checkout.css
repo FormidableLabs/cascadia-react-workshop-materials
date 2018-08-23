@@ -1,0 +1,11 @@
+.Checkout {
+  display: flex;
+}
+
+.Checkout-billing {
+  width: 50%;
+}
+
+.Checkout-cart {
+  width: 50%;
+}
