@@ -1,5 +1,4 @@
 .Form {
-  padding: 40px;
   display: grid;
   grid-template-rows: 1fr 2fr;
   grid-gap: 20px;
@@ -18,12 +17,15 @@
 
 .Form-errors {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 15px 0;
   background: salmon;
 }
 
 .Form-error {
+  padding: 2px;
   color: white;
 }
 

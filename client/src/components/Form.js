@@ -54,15 +54,13 @@ class Form extends React.Component {
     return (
       <div className="Form">
         {this.state.errors.length !== 0 && (
-          <div className="Form-errors">
-            <ul>
-              {this.state.errors.map(error => (
-                <li key={error} className="Form-error">
-                  {error}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul className="Form-errors">
+            {this.state.errors.map(error => (
+              <li key={error} className="Form-error">
+                {error}
+              </li>
+            ))}
+          </ul>
         )}
         <form onSubmit={this.handleSubmit}>
           <input
