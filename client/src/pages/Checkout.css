@@ -1,13 +1,36 @@
 .Checkout {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .Checkout-billing {
-  width: 50%;
-  padding: 100px;
+  margin-bottom: 40px;
 }
 
-.Checkout-cart {
-  width: 50%;
-  padding: 100px;
+.Checkout-billing-title {
+  margin-bottom: 40px;
+}
+
+.Checkout-cart-title {
+  margin-bottom: 40px;
+}
+
+@media (min-width: 1250px) {
+  .Checkout {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .Checkout-billing {
+    width: 50%;
+    padding: 40px 100px;
+  }
+
+  .Checkout-cart {
+    width: 50%;
+    padding: 40px 100px 0 0;
+  }
 }

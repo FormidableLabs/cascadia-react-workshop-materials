@@ -9,11 +9,15 @@
 }
 
 .Cart-item-image-container {
-  width: 200px;
+  width: 100px;
 }
 
 .Cart-item-image {
   width: 100%;
+}
+
+.Cart-item-info {
+  width: 50%;
 }
 
 .Cart-item-name {

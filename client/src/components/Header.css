@@ -2,7 +2,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 40px 100px 40px 100px;
+  padding: 20px;
   border-bottom: 1px solid black;
 }
 
@@ -10,12 +10,21 @@
   font-size: 1.5em;
   display: flex;
   flex: 1;
+  white-space: nowrap;
 }
 
 .App-menu ul {
   display: flex;
+  padding: 0;
 }
 
 .App-menu li {
   margin-left: 30px;
+  white-space: nowrap;
+}
+
+@media (min-width: 1250px) {
+  .App-header {
+    padding: 20px 100px;
+  }
 }

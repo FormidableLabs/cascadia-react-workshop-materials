@@ -9,11 +9,11 @@ const Checkout = () => {
   return (
     <div className="Checkout">
       <div className="Checkout-billing">
-        <h3>Billing Details</h3>
+        <h3 className="Checkout-billing-title">Billing Details</h3>
         <Form />
       </div>
       <div className="Checkout-cart">
-        <h3>Cart</h3>
+        <h3 className="Checkout-cart-title">Cart</h3>
         <Cart />
       </div>
     </div>
