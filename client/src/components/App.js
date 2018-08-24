@@ -3,6 +3,7 @@ import './App.css';
 import Header from './Header';
 import Home from '../pages/Home';
 import Checkout from '../pages/Checkout';
+import Detail from '../pages/Detail';
 import uuid from 'uuid4';
 
 class App extends Component {
@@ -19,7 +20,8 @@ class App extends Component {
       <div className="App">
         <Header />
         {/* <Home /> */}
-        <Checkout />
+        {/* <Checkout /> */}
+        <Detail />
       </div>
     );
   }
