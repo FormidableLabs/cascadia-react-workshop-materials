@@ -1,0 +1,33 @@
+.Cart {
+}
+
+.Cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.Cart-item-image-container {
+  width: 200px;
+}
+
+.Cart-item-image {
+  width: 100%;
+}
+
+.Cart-item-name {
+  font-weight: bold;
+}
+
+.Cart-item-price {
+  margin: 8px;
+  font-weight: 300;
+}
+
+.Cart-item-btn {
+  padding: 4px 12px;
+  color: turquoise;
+  border: 1px solid turquoise;
+  border-radius: 10%;
+}
