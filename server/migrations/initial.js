@@ -31,6 +31,10 @@ module.exports = {
             type: Sequelize.BIGINT,
             field: "product_id",
           },
+          quantity: {
+            type: Sequelize.INTEGER,
+            field: "quantity",
+          },
         })
       )
       .then(() =>
@@ -52,6 +56,15 @@ module.exports = {
           references: { table: "product", field: "id" },
           onDelete: "cascade",
         })
+      )
+      .then(() =>
+        queryInterface.addConstraint(
+          "shopping_cart_product",
+          ["product_id", "shopping_cart_id"],
+          {
+            type: "UNIQUE",
+          }
+        )
       );
   },
 

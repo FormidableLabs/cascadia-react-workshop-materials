@@ -7,20 +7,32 @@ const {
   GraphQLBoolean,
   GraphQLList,
 } = require("graphql");
-const { sequelize } = require("./db");
+const db = require("./db");
+
+const baseProductFields = {
+  id: { type: GraphQLID },
+  name: { type: GraphQLString },
+  imageUrl: {
+    type: GraphQLString,
+    resolve: function(obj) {
+      return obj.image_url;
+    },
+  },
+  price: { type: GraphQLInt },
+};
+
+const InCartProductType = new GraphQLObjectType({
+  name: "InCartProduct",
+  fields: {
+    quantity: { type: GraphQLInt },
+    ...baseProductFields,
+  },
+});
 
 const ProductType = new GraphQLObjectType({
   name: "Product",
   fields: {
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
-    imageUrl: {
-      type: GraphQLString,
-      resolve: function(obj) {
-        return obj.image_url;
-      },
-    },
-    price: { type: GraphQLInt },
+    ...baseProductFields,
   },
 });
 
@@ -29,7 +41,7 @@ const ShoppingCartType = new GraphQLObjectType({
   fields: {
     id: { type: GraphQLID },
     purchased: { type: GraphQLBoolean },
-    products: { type: new GraphQLList(ProductType) },
+    products: { type: new GraphQLList(InCartProductType) },
   },
 });
 
@@ -40,20 +52,14 @@ const QueryType = new GraphQLObjectType({
       type: ProductType,
       args: { id: { type: GraphQLID } },
       resolve: function(_, { id }) {
-        return sequelize
-          .query(`SELECT * FROM product WHERE id='${id}';`, { raw: true })
-          .then(([data]) => data[0])
-          .catch(() => null);
+        return db.getProduct(id);
       },
     },
 
     getProducts: {
       type: new GraphQLList(ProductType),
       resolve: function() {
-        return sequelize
-          .query("SELECT * FROM product;", { raw: true })
-          .then(([data]) => data)
-          .catch(() => []);
+        return db.getProducts();
       },
     },
 
@@ -61,33 +67,7 @@ const QueryType = new GraphQLObjectType({
       type: ShoppingCartType,
       args: { id: { type: GraphQLID } },
       resolve: function(_, { id }) {
-        return sequelize
-          .query(
-            `
-            SELECT
-              shopping_cart.purchased as shopping_cart_purchased,
-              product.id,
-              product.name, product.price, product.image_url
-            FROM shopping_cart_product
-            INNER JOIN shopping_cart
-              ON shopping_cart.id = shopping_cart_product.shopping_cart_id
-            INNER JOIN product
-              ON product.id = shopping_cart_product.product_id
-            WHERE shopping_cart.id = ${id}
-          `,
-            { raw: true }
-          )
-          .then(([data]) => {
-            if (data.length > 0) {
-              return {
-                id,
-                purchased: data[0].shopping_cart_purchased,
-                products: data,
-              };
-            }
-            return { id, purchased: false, products: [] };
-          })
-          .catch(() => null);
+        return db.getShoppingCart(id);
       },
     },
   },
@@ -99,38 +79,24 @@ const MutationType = new GraphQLObjectType({
     createNewShoppingCart: {
       type: ShoppingCartType,
       resolve: function() {
-        return sequelize
-          .query(
-            "INSERT INTO shopping_cart(purchased) VALUES(false) RETURNING *;",
-            {
-              raw: true,
-              type: sequelize.QueryTypes.INSERT,
-            }
-          )
-          .then(([data]) => ({ ...data[0], products: [] }))
-          .catch(() => []);
+        return db.createShoppingCart();
       },
     },
-    addProductToShoppingCart: {
+    setProductQuantityInCart: {
       type: ShoppingCartType,
       args: {
         shoppingCartId: { type: GraphQLID },
         productId: { type: GraphQLID },
+        quantity: { type: GraphQLInt },
       },
-      resolve: function(_, { shoppingCartId, productId }) {
-        return sequelize
-          .query(
-            `
-            INSERT INTO shopping_cart_product(shopping_cart_id, product_id)
-            VALUES(${shoppingCartId}, ${productId});
-            `,
-            {
-              raw: true,
-              type: sequelize.QueryTypes.INSERT,
-            }
-          )
-          .then(([data]) => ({ ...data[0], products: [] }))
-          .catch(() => []);
+      resolve: function(_, { shoppingCartId, productId, quantity }) {
+        return db
+          .setProductQuantityInCart({
+            shoppingCartId,
+            productId,
+            quantity,
+          })
+          .then(() => db.getShoppingCart(shoppingCartId));
       },
     },
   },
