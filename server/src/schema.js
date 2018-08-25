@@ -26,6 +26,12 @@ const InCartProductType = new GraphQLObjectType({
   fields: {
     quantity: { type: GraphQLInt },
     ...baseProductFields,
+    price: {
+      type: GraphQLInt,
+      resolve: function({ price, quantity }) {
+        return price * quantity;
+      },
+    },
   },
 });
 
@@ -42,6 +48,16 @@ const ShoppingCartType = new GraphQLObjectType({
     id: { type: GraphQLID },
     purchased: { type: GraphQLBoolean },
     products: { type: new GraphQLList(InCartProductType) },
+    total: {
+      type: GraphQLInt,
+      resolve: function({ products }) {
+        const total = products.reduce((acc, { quantity, price }) => {
+          acc += quantity * price;
+          return acc;
+        }, 0);
+        return total;
+      },
+    },
   },
 });
 
