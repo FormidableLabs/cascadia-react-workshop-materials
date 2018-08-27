@@ -1,0 +1,11 @@
+{
+  "development": {
+    "username": "formidable",
+    "password": "formidable",
+    "database": "cjs_shopping_cart",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "operatorsAliases": false,
+    "logging": true
+  }
+}
