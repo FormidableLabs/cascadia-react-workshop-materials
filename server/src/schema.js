@@ -106,16 +106,20 @@ const MutationType = new GraphQLObjectType({
         quantity: { type: GraphQLInt },
       },
       resolve: async function(_, { shoppingCartId, productId, quantity }) {
-        if (!shoppingCartId) {
-          const shoppingCart = await db.createShoppingCart();
-          shoppingCartId = shoppingCart.id;
+        try {
+          if (!shoppingCartId) {
+            const shoppingCart = await db.createShoppingCart();
+            shoppingCartId = shoppingCart.id;
+          }
+          await db.setProductQuantityInCart({
+            shoppingCartId,
+            productId,
+            quantity,
+          });
+          return db.getShoppingCart(shoppingCartId);
+        } catch (e) {
+          return null;
         }
-        await db.setProductQuantityInCart({
-          shoppingCartId,
-          productId,
-          quantity,
-        });
-        return db.getShoppingCart(shoppingCartId);
       },
     },
   },
