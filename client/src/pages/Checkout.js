@@ -1,11 +1,10 @@
 import React from 'react';
-import './Checkout.css';
 import Form from '../components/Form';
 import Cart from '../components/Cart';
-import Product from '../components/Product';
-import fakeData from '../fakedata.json';
 
-const Checkout = () => {
+import './Checkout.css';
+
+const Checkout = ({ updateCart }) => {
   return (
     <div className="Checkout">
       <div className="Checkout-billing">
@@ -14,7 +13,7 @@ const Checkout = () => {
       </div>
       <div className="Checkout-cart">
         <h3 className="Checkout-cart-title">Cart</h3>
-        <Cart />
+        <Cart updateCart={updateCart} />
       </div>
     </div>
   );

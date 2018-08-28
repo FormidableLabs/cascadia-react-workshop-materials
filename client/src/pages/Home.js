@@ -1,15 +1,41 @@
 import React from 'react';
-import './Home.css';
-import Product from '../components/Product';
-import fakeData from '../fakedata.json';
+import { Connect, query } from 'urql';
 
-const Home = () => {
+import Product from '../components/Product';
+
+import './Home.css';
+
+const GetProducts = `
+query {
+  getProducts {
+    id
+    name
+    imageUrl
+    price
+  }
+}
+`;
+
+const Home = ({ updateCart }) => {
   return (
-    <div className="Home">
-      {fakeData.map(({ id, ...rest }) => (
-        <Product key={id} {...rest} />
-      ))}
-    </div>
+    <Connect query={query(GetProducts)}>
+      {({ loaded, data }) => {
+        if (!loaded) {
+          return <div>Loading...</div>;
+        }
+        return (
+          <div className="Home">
+            {data.getProducts.map(product => (
+              <Product
+                key={product.id}
+                product={product}
+                updateCart={updateCart}
+              />
+            ))}
+          </div>
+        );
+      }}
+    </Connect>
   );
 };
 

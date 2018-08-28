@@ -1,8 +1,12 @@
 import React from 'react';
-import './Header.css';
+import { Connect, query } from 'urql';
+import { GetCart } from './Cart';
 import { HOME, CHECKOUT } from '../utils/constants';
+import { FORMIDABLE_CART_ID } from '../utils/constants';
 
-const Header = ({ updateRoute }) => {
+import './Header.css';
+
+const Header = ({ updateRoute, cartCount }) => {
   return (
     <header className="App-header">
       <h1 className="App-title" onClick={() => updateRoute(HOME)}>
@@ -14,7 +18,10 @@ const Header = ({ updateRoute }) => {
             <li>Shop</li>
           </a>
           <a onClick={() => updateRoute(CHECKOUT)}>
-            <li>Cart (0)</li>
+            <li>
+              Cart
+              {cartCount > 0 ? `(${cartCount})` : null}
+            </li>
           </a>
         </ul>
       </nav>
@@ -22,4 +29,21 @@ const Header = ({ updateRoute }) => {
   );
 };
 
-export default Header;
+const ConnectedHeader = ({ updateRoute }) => {
+  const cartId = localStorage.getItem(FORMIDABLE_CART_ID);
+
+  if (!cartId) {
+    return <Header updateRoute={updateRoute} cartCount={0} />;
+  }
+
+  return (
+    <Connect query={query(GetCart, { id: cartId })}>
+      {({ loaded, data }) => {
+        let cartCount = loaded ? data.getShoppingCart.products.length : 0;
+        return <Header updateRoute={updateRoute} cartCount={cartCount} />;
+      }}
+    </Connect>
+  );
+};
+
+export default ConnectedHeader;
