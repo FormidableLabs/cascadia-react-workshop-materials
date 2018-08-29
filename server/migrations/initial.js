@@ -18,7 +18,12 @@ module.exports = {
             primaryKey: true,
             autoIncrement: true,
           },
+          name: { type: Sequelize.STRING, field: "name" },
           purchased: { type: Sequelize.BOOLEAN, field: "purchased" },
+          purchasedTimestamp: {
+            type: Sequelize.DATE,
+            field: "purchased_timestamp",
+          },
         })
       )
       .then(() =>

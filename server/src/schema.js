@@ -48,7 +48,21 @@ const ShoppingCartType = new GraphQLObjectType({
     id: { type: GraphQLID },
     purchased: { type: GraphQLBoolean },
     products: { type: new GraphQLList(InCartProductType) },
-    total: {
+    purchasedAt: {
+      type: GraphQLString,
+      resolve: ({ purchased_timestamp }) => purchased_timestamp,
+    },
+    totalQuantity: {
+      type: GraphQLInt,
+      resolve: function({ products }) {
+        const total = products.reduce((acc, { quantity }) => {
+          acc += quantity;
+          return acc;
+        }, 0);
+        return total;
+      },
+    },
+    totalPrice: {
       type: GraphQLInt,
       resolve: function({ products }) {
         const total = products.reduce((acc, { quantity, price }) => {
@@ -83,7 +97,15 @@ const QueryType = new GraphQLObjectType({
       type: ShoppingCartType,
       args: { id: { type: GraphQLID } },
       resolve: function(_, { id }) {
-        return db.getShoppingCart(id);
+        return db.getShoppingCarts({ id });
+      },
+    },
+
+    getOrders: {
+      type: new GraphQLList(ShoppingCartType),
+      args: { name: { type: GraphQLString } },
+      resolve: function(_, { name }) {
+        return db.getShoppingCarts({ name });
       },
     },
   },
@@ -101,25 +123,37 @@ const MutationType = new GraphQLObjectType({
     setProductQuantityInCart: {
       type: ShoppingCartType,
       args: {
-        shoppingCartId: { type: GraphQLID },
+        id: { type: GraphQLID },
         productId: { type: GraphQLID },
         quantity: { type: GraphQLInt },
       },
-      resolve: async function(_, { shoppingCartId, productId, quantity }) {
-        try {
-          if (!shoppingCartId) {
-            const shoppingCart = await db.createShoppingCart();
-            shoppingCartId = shoppingCart.id;
-          }
-          await db.setProductQuantityInCart({
-            shoppingCartId,
-            productId,
-            quantity,
-          });
-          return db.getShoppingCart(shoppingCartId);
-        } catch (e) {
-          return null;
+      resolve: async function(_, { id, productId, quantity }) {
+        if (!id) {
+          const shoppingCart = await db.createShoppingCart();
+          id = shoppingCart.id;
         }
+        await db.setProductQuantityInCart({
+          shoppingCartId: id,
+          productId,
+          quantity,
+        });
+        return db.getShoppingCarts({ id });
+      },
+    },
+    purchaseShoppingCart: {
+      type: ShoppingCartType,
+      args: {
+        id: { type: GraphQLID },
+        name: { type: GraphQLString },
+      },
+      resolve: async function(_, { id, name }) {
+        if (!id || !name) {
+          throw new Error(
+            "Cannot purchase shopping cart without an ID or name."
+          );
+        }
+        await db.purchaseShoppingCart({ id, name });
+        return db.getShoppingCarts({ id });
       },
     },
   },
