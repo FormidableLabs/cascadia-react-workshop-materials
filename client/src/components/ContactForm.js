@@ -45,7 +45,7 @@ class ContactForm extends Component {
           <div className="control">
             <textarea
               className="textarea"
-              placeholder="messsage"
+              placeholder="message"
               type="text"
               name="message"
               value={this.state.message}
