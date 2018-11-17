@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { HOME, CHECKOUT, ORDERS, CONTACT } from '../utils/constants';
+import { CartConsumer } from './Cart';
 
 class Header extends Component {
   state = {
@@ -78,4 +79,12 @@ class Header extends Component {
   }
 }
 
-export default Header;
+const ConnectedHeader = ({ updateRoute }) => (
+  <CartConsumer>
+    {({ cart }) => (
+      <Header updateRoute={updateRoute} cartCount={cart.totalQuantity} />
+    )}
+  </CartConsumer>
+);
+
+export default ConnectedHeader;

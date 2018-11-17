@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { priceInDollars } from '../utils';
 import { DETAIL } from '../utils/constants';
+import { CartConsumer } from './Cart';
 
 const ONE = 1;
 
@@ -55,4 +56,16 @@ class Product extends Component {
   }
 }
 
-export default Product;
+const ConnectedProduct = ({ updateRoute, product }) => (
+  <CartConsumer>
+    {({ updateQuantity }) => (
+      <Product
+        product={product}
+        updateRoute={updateRoute}
+        updateQuantity={updateQuantity}
+      />
+    )}
+  </CartConsumer>
+);
+
+export default ConnectedProduct;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { priceInDollars } from '../utils';
 import Counter from './Counter';
+import { CartConsumer } from './Cart';
 
 const CartItem = ({ product, onQuantityChange }) => {
   const { id: productId, name, imageUrl, price, quantity } = product;
@@ -39,4 +40,12 @@ const CartItem = ({ product, onQuantityChange }) => {
   );
 };
 
-export default CartItem;
+const ConnectedCartItem = ({ product }) => (
+  <CartConsumer>
+    {({ updateQuantity }) => (
+      <CartItem product={product} onQuantityChange={updateQuantity} />
+    )}
+  </CartConsumer>
+);
+
+export default ConnectedCartItem;
