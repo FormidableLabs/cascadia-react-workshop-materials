@@ -45,7 +45,7 @@ const ContactForm = ({ onSubmit }) => (
           <div className="control">
             <textarea
               className="textarea"
-              placeholder="messsage"
+              placeholder="message"
               type="text"
               name="message"
               value={values.message}
