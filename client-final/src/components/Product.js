@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from '@reach/router';
 import posed from 'react-pose';
 
+import { PRODUCT } from '../utils/constants';
 import { priceInDollars } from '../utils';
 import { CartConsumer } from './Cart';
 
@@ -52,7 +53,7 @@ class Product extends Component {
           </div>
         </div>
         <footer className="card-footer">
-          <Link to={`product/${id}`} className="card-footer-item">
+          <Link to={`${PRODUCT}/${id}`} className="card-footer-item">
             Details
           </Link>
           <span

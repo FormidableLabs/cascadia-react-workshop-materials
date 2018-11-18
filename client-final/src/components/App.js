@@ -9,17 +9,19 @@ import OrdersPage from '../pages/OrdersPage';
 import ContactPage from '../pages/ContactPage';
 import { CartProvider } from './Cart';
 
+import { HOME, PRODUCT, CHECKOUT, ORDERS, CONTACT } from '../utils/constants';
+
 const App = () => {
   return (
     <div className="App">
       <Header />
       <div className="section">
         <Router>
-          <HomePage path="/" />
-          <CheckoutPage path="checkout" />
-          <DetailPage path="product/:productId" />
-          <OrdersPage path="orders" />
-          <ContactPage path="contact" />
+          <HomePage path={HOME} />
+          <CheckoutPage path={CHECKOUT} />
+          <DetailPage path={`${PRODUCT}/:productId`} />
+          <OrdersPage path={ORDERS} />
+          <ContactPage path={CONTACT} />
         </Router>
       </div>
     </div>

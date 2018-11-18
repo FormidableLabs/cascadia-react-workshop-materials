@@ -3,6 +3,7 @@ import { Link } from '@reach/router';
 import posed from 'react-pose';
 
 import { CartConsumer } from './Cart';
+import { HOME, CHECKOUT, ORDERS, CONTACT } from '../utils/constants';
 
 const BouncyButton = posed.div({
   attention: {
@@ -45,7 +46,7 @@ class Header extends Component {
       <header className="container">
         <nav className="navbar" role="navigation" aria-label="main navigation">
           <div className="navbar-brand">
-            <Link className="navbar-item" to="/">
+            <Link className="navbar-item" to={HOME}>
               <h1 className="title is-3">Formidable Store</h1>
             </Link>
 
@@ -64,15 +65,15 @@ class Header extends Component {
 
           <div className={`navbar-menu ${showDropdown}`}>
             <div className="navbar-start">
-              <Link to="/" className="navbar-item">
+              <Link to={HOME} className="navbar-item">
                 Shop
               </Link>
 
-              <Link to="orders" className="navbar-item">
+              <Link to={ORDERS} className="navbar-item">
                 Orders
               </Link>
 
-              <Link to="contact" className="navbar-item">
+              <Link to={CONTACT} className="navbar-item">
                 Contact
               </Link>
             </div>
@@ -83,7 +84,7 @@ class Header extends Component {
                   pose={this.state.bounceButton ? 'attention' : 'noAttention'}
                   className="button is-primary"
                 >
-                  <Link to="checkout">
+                  <Link to={CHECKOUT}>
                     {`Cart ${cartCount > 0 ? `(${cartCount})` : ''}`}
                   </Link>
                 </BouncyButton>
